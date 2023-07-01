@@ -1,7 +1,5 @@
 HELP.md
 target/
-db/explorewm.mv.db
-db/explorewm.trace.db
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
