@@ -1,10 +1,8 @@
 package ru.practicum.ewn.service.users;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewn.service.users.dto.UserDtoCreate;
 import ru.practicum.ewn.service.users.dto.UserDtoResponse;
@@ -15,31 +13,27 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
-@Validated
 @RestController
 @RequestMapping("/admin/users")
 @RequiredArgsConstructor
-@Slf4j
 public class AdminUserController {
     private final UserService userService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserDtoResponse createUser(@Valid @RequestBody UserDtoCreate userDto) {
-        log.info("Создан пользователь с именем = {}", userDto.getName());
         return userService.createUser(userDto);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUserById(@PathVariable Long id) {
-        log.info("Удален пользователь с id = {}", id);
         userService.deleteUser(id);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<UserDtoResponse> findUsers(@Nullable @RequestParam(name = "ids", required = false) List<Long> ids,
+    public List<UserDtoResponse> findUsers(@Nullable @RequestParam(name = "ids") List<Long> ids,
                                            @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
                                            @Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
         return userService.findUsers(ids, from, size);

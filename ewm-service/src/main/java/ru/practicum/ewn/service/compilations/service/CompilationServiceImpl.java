@@ -76,17 +76,11 @@ public class CompilationServiceImpl implements CompilationService {
     @Override
     @Transactional(readOnly = true)
     public List<CompilationDto> findAllCompilations(Boolean pinned, int from, int size) {
-        int pageNumber = (int) Math.ceil((double) from / size);
-        Pageable pageable = PageRequest.of(pageNumber, size);
-        if (pinned != null) {
-            return compilationRepository.findCompilationByPinned(pinned, pageable).stream()
-                    .map(compilationMapper::toDto)
-                    .collect(Collectors.toList());
-        } else {
-            return compilationRepository.findAll(pageable).stream()
-                    .map(compilationMapper::toDto)
-                    .collect(Collectors.toList());
-        }
+        Pageable pageable = PageRequest.of(from, size);
+
+        return compilationRepository.findCompilationByPinned(pinned, pageable).stream()
+                .map(compilationMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     private Compilation getCompilationIfExists(Long compilationId) {
