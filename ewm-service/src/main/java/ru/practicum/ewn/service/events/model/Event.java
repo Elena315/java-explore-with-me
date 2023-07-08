@@ -35,8 +35,10 @@ public class Event {
     private LocalDateTime createdOn;
     private LocalDateTime eventDate;
     @Embedded
-    @AttributeOverrides({@AttributeOverride(name = "lat", column = @Column(name = "latitude")),
-            @AttributeOverride(name = "lon", column = @Column(name = "longitude"))})
+    @AttributeOverrides({
+            @AttributeOverride(name = "lat", column = @Column(name = "latitude")),
+            @AttributeOverride(name = "lon", column = @Column(name = "longitude"))
+    })
     private Location location;
     private Boolean paid;
     private Integer participantLimit;
