@@ -4,7 +4,6 @@ import lombok.*;
 import lombok.extern.jackson.Jacksonized;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 @Getter
 @Setter
@@ -14,6 +13,5 @@ import javax.validation.constraints.Size;
 @Jacksonized
 public class CategoryDtoCreate {
     @NotBlank
-    @Size(max = 50)
     private String name;
 }
