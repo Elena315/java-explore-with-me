@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.extern.jackson.Jacksonized;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Getter
@@ -18,5 +19,6 @@ public class CompilationDtoCreate {
     @NotNull
     private Boolean pinned;
     @NotNull
+    @Size(max = 50)
     private String title;
 }

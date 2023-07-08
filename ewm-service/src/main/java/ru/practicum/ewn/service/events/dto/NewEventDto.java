@@ -1,15 +1,11 @@
 package ru.practicum.ewn.service.events.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.extern.jackson.Jacksonized;
 import ru.practicum.ewn.service.events.model.Location;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 
 @Getter
@@ -31,7 +27,7 @@ public class NewEventDto {
     private Location location;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @NotNull
-    @JsonProperty
+    @Past
     private LocalDateTime eventDate;
     @NotNull
     private Boolean paid;
