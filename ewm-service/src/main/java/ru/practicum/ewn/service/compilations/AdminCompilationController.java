@@ -2,6 +2,7 @@ package ru.practicum.ewn.service.compilations;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewn.service.compilations.dto.CompilationDto;
 import ru.practicum.ewn.service.compilations.dto.CompilationDtoCreate;
@@ -10,6 +11,7 @@ import ru.practicum.ewn.service.compilations.service.CompilationService;
 
 import javax.validation.Valid;
 
+@Validated
 @RestController
 @RequestMapping("/admin/compilations")
 @RequiredArgsConstructor
