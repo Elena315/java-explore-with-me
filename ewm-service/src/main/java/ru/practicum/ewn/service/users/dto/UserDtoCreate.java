@@ -4,14 +4,15 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 @Value
 @Builder
 @Jacksonized
 public class UserDtoCreate {
-    @NotNull
+    @NotBlank
     String name;
-    @NotNull
+    @Email
     String email;
 }

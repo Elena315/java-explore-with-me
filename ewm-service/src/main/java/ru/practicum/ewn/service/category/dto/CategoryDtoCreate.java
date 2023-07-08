@@ -3,7 +3,7 @@ package ru.practicum.ewn.service.category.dto;
 import lombok.*;
 import lombok.extern.jackson.Jacksonized;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
@@ -12,6 +12,6 @@ import javax.validation.constraints.NotNull;
 @Builder
 @Jacksonized
 public class CategoryDtoCreate {
-    @NotNull
+    @NotBlank
     private String name;
 }
