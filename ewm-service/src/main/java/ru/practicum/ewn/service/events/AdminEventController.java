@@ -2,6 +2,7 @@ package ru.practicum.ewn.service.events;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewn.service.events.dto.EventDto;
 import ru.practicum.ewn.service.events.dto.UpdateEventAdminRequest;
@@ -11,6 +12,7 @@ import ru.practicum.ewn.service.utils.AdminEventFilter;
 import javax.validation.Valid;
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("/admin/events")
 @RequiredArgsConstructor
@@ -27,7 +29,7 @@ public class AdminEventController {
     @PatchMapping("/{eventId}")
     @ResponseStatus(HttpStatus.OK)
     public EventDto updateEvent(@PathVariable Long eventId,
-                                @RequestBody UpdateEventAdminRequest request) {
+                                @Valid @RequestBody UpdateEventAdminRequest request) {
         return adminEventService.updateEventByAdmin(eventId, request);
     }
 
