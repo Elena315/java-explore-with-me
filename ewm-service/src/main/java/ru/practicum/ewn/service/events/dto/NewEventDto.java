@@ -9,6 +9,7 @@ import ru.practicum.ewn.service.events.model.Location;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Getter
@@ -19,10 +20,12 @@ import java.time.LocalDateTime;
 @Jacksonized
 public class NewEventDto {
     @NotBlank
+    @Size(min = 20, max = 2000)
     private String annotation;
     @NotNull
     private Long category;
     @NotBlank
+    @Size(min = 20, max = 7000)
     private String description;
     @NotNull
     private Location location;
@@ -38,5 +41,6 @@ public class NewEventDto {
     @NotNull
     private Boolean requestModeration;
     @NotNull
+    @Size(min = 3, max = 120)
     private String title;
 }
