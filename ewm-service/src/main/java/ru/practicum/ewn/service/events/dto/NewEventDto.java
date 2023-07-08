@@ -6,7 +6,7 @@ import lombok.extern.jackson.Jacksonized;
 import ru.practicum.ewn.service.events.model.Location;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Getter
@@ -16,24 +16,32 @@ import java.time.LocalDateTime;
 @Builder
 @Jacksonized
 public class NewEventDto {
+
     @NotNull
+    @Size(min = 3, max = 2000)
     private String annotation;
+
     @NotNull
     private Long category;
+
     @NotNull
+    @Size(min = 20, max = 7000)
     private String description;
+
     @NotNull
     private Location location;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @NotNull
     private LocalDateTime eventDate;
-    @NotNull
+
     private Boolean paid;
-    @NotNull
-    @PositiveOrZero
+
     private Integer participantLimit;
-    @NotNull
+
     private Boolean requestModeration;
+
     @NotNull
+    @Size(min = 3, max = 120)
     private String title;
 }
