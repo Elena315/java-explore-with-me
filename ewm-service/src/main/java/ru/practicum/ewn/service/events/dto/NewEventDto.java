@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.extern.jackson.Jacksonized;
 import ru.practicum.ewn.service.events.model.Location;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -18,14 +19,15 @@ import java.time.LocalDateTime;
 public class NewEventDto {
 
     @NotNull
-    @Size(min = 3, max = 2000)
+    @NotBlank(message = "Краткое описание события не может быть пустым")
+    @Size(max = 2000, min = 20)
     private String annotation;
 
     @NotNull
     private Long category;
 
-    @NotNull
-    @Size(min = 20, max = 7000)
+    @NotBlank(message = "Описание события не может быть пустым")
+    @Size(max = 7000, min = 20)
     private String description;
 
     @NotNull
