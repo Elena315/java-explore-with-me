@@ -11,8 +11,9 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @Jacksonized
 public class UserDtoCreate {
-    @NotBlank
+    @NotBlank(message = "Имя пользователя не может быть пустым")
     String name;
-    @Email
+    @Email(message = "Некорректно заполнен email пользователя")
+    @NotBlank(message = "Некорректно заполнен email пользователя")
     String email;
 }

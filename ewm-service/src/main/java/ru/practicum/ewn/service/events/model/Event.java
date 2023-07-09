@@ -11,6 +11,9 @@ import ru.practicum.ewn.service.enums.EventState;
 import ru.practicum.ewn.service.users.model.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,6 +28,9 @@ public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank
+    @NotNull
+    @Size(min = 20)
     private String annotation;
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
