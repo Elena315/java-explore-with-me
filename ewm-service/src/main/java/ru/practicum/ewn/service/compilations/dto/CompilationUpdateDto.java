@@ -3,6 +3,8 @@ package ru.practicum.ewn.service.compilations.dto;
 import lombok.*;
 import lombok.extern.jackson.Jacksonized;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Getter
@@ -14,5 +16,7 @@ import java.util.List;
 public class CompilationUpdateDto {
     private List<Long> events;
     private Boolean pinned;
+    @NotBlank
+    @Size(max = 50)
     private String title;
 }
