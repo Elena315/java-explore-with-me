@@ -4,6 +4,8 @@ import lombok.*;
 import lombok.extern.jackson.Jacksonized;
 import ru.practicum.ewn.service.events.dto.EventShortDto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Getter
@@ -16,5 +18,7 @@ public class CompilationDto {
     private Long id;
     private List<EventShortDto> events;
     private Boolean pinned;
+    @NotBlank
+    @Size(min = 1, max = 50)
     private String title;
 }
