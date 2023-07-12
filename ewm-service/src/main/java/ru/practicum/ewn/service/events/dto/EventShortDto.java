@@ -6,6 +6,7 @@ import lombok.extern.jackson.Jacksonized;
 import ru.practicum.ewn.service.category.dto.CategoryDto;
 import ru.practicum.ewn.service.users.dto.UserShortDto;
 
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Getter
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 @Builder
 @Jacksonized
 public class EventShortDto {
+    @Size(min = 20, max = 2000)
     private String annotation;
     private CategoryDto category;
     private Long confirmedRequests;
@@ -22,7 +24,8 @@ public class EventShortDto {
     private LocalDateTime eventDate;
     private Long id;
     private UserShortDto initiator;
-    private Boolean paid;
+    private Boolean paid = false;
+    @Size(min = 3, max = 120)
     private String title;
     private Integer views;
 }
