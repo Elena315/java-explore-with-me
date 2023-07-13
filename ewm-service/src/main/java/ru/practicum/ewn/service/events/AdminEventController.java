@@ -21,8 +21,8 @@ public class AdminEventController {
 
     @GetMapping
     public List<EventDto> getAllEvents(@Valid @ModelAttribute("userEventFilter") AdminEventFilter adminEventFilter,
-                                       @RequestParam(name = "from", defaultValue = "0", required = false) Integer from,
-                                       @RequestParam(name = "size", defaultValue = "10", required = false) Integer size) {
+                                       @RequestParam(name = "from", defaultValue = "0") Integer from,
+                                       @RequestParam(name = "size", defaultValue = "10") Integer size) {
         return adminEventService.adminGetEvents(adminEventFilter, from, size);
     }
 

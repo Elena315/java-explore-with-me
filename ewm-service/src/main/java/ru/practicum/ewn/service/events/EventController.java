@@ -38,8 +38,8 @@ public class EventController {
 
     @GetMapping
     public List<EventShortDto> getAllEvents(@Valid @ModelAttribute("userEventFilter") UserEventFilter userEventFilter,
-                                            @RequestParam(name = "from", defaultValue = "0", required = false) Integer from,
-                                            @RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
+                                            @RequestParam(name = "from", defaultValue = "0") Integer from,
+                                            @RequestParam(name = "size", defaultValue = "10") Integer size,
                                             HttpServletRequest servletRequest,
                                             @Value("${main.service.name}") String appName) {
         EndpointHitDto endpointHitDto = EndpointHitDto.builder()
