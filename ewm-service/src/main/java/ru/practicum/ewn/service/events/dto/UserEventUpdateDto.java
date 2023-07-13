@@ -24,11 +24,11 @@ public class UserEventUpdateDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime eventDate;
     private Location location;
-    @Builder.Default
+
     private Boolean paid = false;
-    @Builder.Default
+
     private Integer participantLimit = 0;
-    @Builder.Default
+
     private Boolean requestModeration = true;
     private StateAction stateAction;
     @Size(min = 3, max = 120)
