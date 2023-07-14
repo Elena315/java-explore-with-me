@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.extern.jackson.Jacksonized;
 import ru.practicum.ewn.service.events.model.Location;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
@@ -16,11 +17,11 @@ import java.time.LocalDateTime;
 @Builder
 @Jacksonized
 public class NewEventDto {
-    @NotNull
+    @NotBlank
     private String annotation;
     @NotNull
     private Long category;
-    @NotNull
+    @NotBlank
     private String description;
     @NotNull
     private Location location;
