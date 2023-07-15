@@ -4,11 +4,15 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
+import javax.validation.constraints.Size;
+
 @Value
 @Builder
 @Jacksonized
 public class UserDtoResponse {
     Long id;
+    @Size(max = 63)
     String name;
+    @Size(max = 64)
     String email;
 }

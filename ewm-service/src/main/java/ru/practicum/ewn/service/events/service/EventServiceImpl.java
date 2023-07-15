@@ -60,12 +60,10 @@ public class EventServiceImpl implements EventService {
     public EventDto getEventById(Long id, EndpointHitDto endpointHitDto) {
         log.info("getting event with id {}", id);
 
-        statisticService.sendStatistic(endpointHitDto);
-
-        Event event = eventRepository.findById(id)
+        Event event = eventRepository.findByIdAndPublishedOnIsNotNull(id)
                 .orElseThrow(() -> new NotFoundException(String.format("event with id %d not found", id)));
 
-
+        statisticService.sendStatistic(endpointHitDto);
         return buildEventResponse(event);
     }
 

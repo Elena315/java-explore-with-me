@@ -8,6 +8,7 @@ import ru.practicum.ewn.service.events.model.Event;
 import ru.practicum.ewn.service.users.model.User;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
@@ -17,6 +18,8 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> findAll(Specification<Event> specification, Pageable pageable);
 
     Event findEventByIdAndInitiator(Long id, User initiator);
+
+    Optional<Event> findByIdAndPublishedOnIsNotNull(Long id);
 
     List<Event> findEventsByIdIn(List<Long> id);
 
