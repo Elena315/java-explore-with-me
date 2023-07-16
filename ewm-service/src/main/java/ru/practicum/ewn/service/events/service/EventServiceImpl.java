@@ -11,11 +11,11 @@ import ru.practicum.ewm.dto.EndpointHitDto;
 import ru.practicum.ewn.service.events.dao.EventRepository;
 import ru.practicum.ewn.service.events.dto.EventDto;
 import ru.practicum.ewn.service.events.dto.EventShortDto;
+import ru.practicum.ewn.service.events.mapper.EventMapper;
 import ru.practicum.ewn.service.events.model.Event;
 import ru.practicum.ewn.service.handlers.DataException;
 import ru.practicum.ewn.service.handlers.NotFoundException;
 import ru.practicum.ewn.service.statistic.StatisticService;
-import ru.practicum.ewn.service.events.mapper.EventMapper;
 import ru.practicum.ewn.service.utils.UserEventFilter;
 
 import java.time.LocalDateTime;
@@ -50,7 +50,7 @@ public class EventServiceImpl implements EventService {
         Specification<Event> specification = filtersFromUser(filter);
 
         List<Event> events = eventRepository.findAll(specification, pageable);
-        if (events == null || events.isEmpty()){
+        if (events == null || events.isEmpty()) {
             throw new DataException("Incorrectly made request.");
         }
         return buildEventResponse(events).stream()
