@@ -32,13 +32,13 @@ public class NewEventDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @NotNull
     private LocalDateTime eventDate;
-    @NotNull
-    private Boolean paid;
-    @NotNull
+    @Builder.Default
+    private Boolean paid = false;
     @PositiveOrZero
-    private Integer participantLimit;
-    @NotNull
-    private Boolean requestModeration;
+    @Builder.Default
+    private Integer participantLimit = 0;
+    @Builder.Default
+    private Boolean requestModeration = true;
     @NotNull
     @Size(min = 3, max = 120)
     private String title;

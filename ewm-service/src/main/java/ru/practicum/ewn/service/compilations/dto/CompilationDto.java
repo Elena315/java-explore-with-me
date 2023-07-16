@@ -4,6 +4,8 @@ import lombok.*;
 import lombok.extern.jackson.Jacksonized;
 import ru.practicum.ewn.service.events.dto.EventShortDto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Getter
@@ -15,6 +17,9 @@ import java.util.List;
 public class CompilationDto {
     private Long id;
     private List<EventShortDto> events;
-    private Boolean pinned;
+    @NotNull(message = "не должно равняться null")
+    @Builder.Default
+    private Boolean pinned = false;
+    @Size(max = 50)
     private String title;
 }

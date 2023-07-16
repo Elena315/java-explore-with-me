@@ -12,6 +12,7 @@ import ru.practicum.ewn.service.events.dao.EventRepository;
 import ru.practicum.ewn.service.events.dto.EventDto;
 import ru.practicum.ewn.service.events.dto.EventShortDto;
 import ru.practicum.ewn.service.events.model.Event;
+import ru.practicum.ewn.service.handlers.DataException;
 import ru.practicum.ewn.service.handlers.NotFoundException;
 import ru.practicum.ewn.service.statistic.StatisticService;
 import ru.practicum.ewn.service.events.mapper.EventMapper;
@@ -49,7 +50,9 @@ public class EventServiceImpl implements EventService {
         Specification<Event> specification = filtersFromUser(filter);
 
         List<Event> events = eventRepository.findAll(specification, pageable);
-
+        if (events == null || events.isEmpty()){
+            throw new DataException("Incorrectly made request.");
+        }
         return buildEventResponse(events).stream()
                 .map(eventMapper::toShortDto)
                 .collect(Collectors.toList());
@@ -64,6 +67,7 @@ public class EventServiceImpl implements EventService {
                 .orElseThrow(() -> new NotFoundException(String.format("event with id %d not found", id)));
 
         statisticService.sendStatistic(endpointHitDto);
+
         return buildEventResponse(event);
     }
 

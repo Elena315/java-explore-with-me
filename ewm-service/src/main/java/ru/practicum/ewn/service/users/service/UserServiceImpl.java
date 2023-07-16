@@ -107,13 +107,16 @@ public class UserServiceImpl implements UserService {
 
         Request request = new Request();
 
-
         if (event.getInitiator().equals(user))
             throw new DataValidationException("You can not send request for own event");
 
-        if (Objects.equals(event.getConfirmedRequests(), event.getParticipantLimit()))
-            throw new DataValidationException("Participant limit for event exceeded");
-
+        if (Objects.equals(event.getConfirmedRequests(), event.getParticipantLimit())) {
+            if (event.getParticipantLimit() != 0) {
+                throw new DataValidationException("Participant limit for event exceeded");
+            } else {
+              System.out.println("For the requested operation the conditions are not met.");
+            }
+        }
         if (!event.getEventState().equals(EventState.PUBLISHED))
             throw new DataValidationException("Can not send request for not published event");
 

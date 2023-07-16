@@ -6,6 +6,7 @@ import lombok.extern.jackson.Jacksonized;
 import ru.practicum.ewn.service.enums.StateAction;
 import ru.practicum.ewn.service.events.model.Location;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
@@ -24,9 +25,13 @@ public class UserEventUpdateDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime eventDate;
     private Location location;
-    private Boolean paid;
-    private Integer participantLimit;
-    private Boolean requestModeration;
+    @Builder.Default
+    private Boolean paid = false;
+    @Builder.Default
+    private Integer participantLimit = 0;
+    @Builder.Default
+    private Boolean requestModeration = true;
+    @NotNull
     private StateAction stateAction;
     @Size(min = 3, max = 120)
     private String title;

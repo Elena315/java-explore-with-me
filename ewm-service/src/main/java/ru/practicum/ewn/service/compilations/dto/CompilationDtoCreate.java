@@ -17,7 +17,9 @@ import java.util.List;
 public class CompilationDtoCreate {
     @NotNull
     private List<Long> events;
-    private Boolean pinned;
+    @NotNull
+    @Builder.Default
+    private Boolean pinned = false;
     @NotNull
     @NotBlank
     @Size(max = 50)

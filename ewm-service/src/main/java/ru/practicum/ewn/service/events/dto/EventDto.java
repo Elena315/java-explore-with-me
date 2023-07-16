@@ -9,6 +9,7 @@ import ru.practicum.ewn.service.enums.EventState;
 import ru.practicum.ewn.service.events.model.Location;
 import ru.practicum.ewn.service.users.dto.UserShortDto;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
@@ -19,24 +20,29 @@ import java.time.LocalDateTime;
 @Builder
 @Jacksonized
 public class EventDto {
+    @NotNull
     private Long id;
-    @Size(max = 2000)
+    @NotNull
+    @Size(min = 20, max = 2000)
     private String annotation;
     private CategoryDto category;
     private Integer confirmedRequests;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdOn;
-    @Size(max = 7000)
+    @Size(min = 20,max = 7000)
     private String description;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime eventDate;
     private UserShortDto initiator;
     private Location location;
-    private Boolean paid;
-    private Integer participantLimit;
+    @Builder.Default
+    private Boolean paid = false;
+    @Builder.Default
+    private Integer participantLimit = 0;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime publishedOn;
-    private Boolean requestModeration;
+    @Builder.Default
+    private Boolean requestModeration = true;
     @JsonProperty(value = "state")
     private EventState eventState;
     @Size(min = 3, max = 120)

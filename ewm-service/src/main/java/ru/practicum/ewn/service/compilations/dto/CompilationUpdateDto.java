@@ -14,7 +14,8 @@ import java.util.List;
 @Jacksonized
 public class CompilationUpdateDto {
     private List<Long> events;
-    private Boolean pinned;
+    @Builder.Default
+    private Boolean pinned = false;
     @Size(max = 50)
     private String title;
 }

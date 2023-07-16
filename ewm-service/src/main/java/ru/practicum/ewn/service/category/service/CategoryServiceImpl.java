@@ -57,7 +57,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public CategoryDto getById(Long id) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("category with id %d not found", id)));
@@ -66,7 +65,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<CategoryDto> findCategories(Integer from, Integer size) {
         Pageable pg = PageRequest.of(from, size);
 

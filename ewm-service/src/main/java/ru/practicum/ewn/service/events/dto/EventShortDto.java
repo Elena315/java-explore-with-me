@@ -24,7 +24,8 @@ public class EventShortDto {
     private LocalDateTime eventDate;
     private Long id;
     private UserShortDto initiator;
-    private Boolean paid;
+    @Builder.Default
+    private Boolean paid = false;
     @Size(min = 3, max = 120)
     private String title;
     private Integer views;

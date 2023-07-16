@@ -38,9 +38,9 @@ public class Event {
     @AttributeOverrides({@AttributeOverride(name = "lat", column = @Column(name = "latitude")),
             @AttributeOverride(name = "lon", column = @Column(name = "longitude"))})
     private Location location;
-    private Boolean paid;
-    private Integer participantLimit;
-    private Boolean requestModeration;
+    private Boolean paid = false;
+    private Integer participantLimit = 0;
+    private Boolean requestModeration = true;
     private String title;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "initiator_id", referencedColumnName = "id", nullable = false)
