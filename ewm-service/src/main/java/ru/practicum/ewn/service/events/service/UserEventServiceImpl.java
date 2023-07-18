@@ -47,7 +47,7 @@ public class UserEventServiceImpl implements UserEventService {
     @Override
     @Transactional(readOnly = true)
     public List<EventShortDto> getEventsByUserId(Long initiatorId, int from, int size) {
-        Pageable pageable = PageRequest.of(from, size);
+        Pageable pageable = PageRequest.of(from/size, size);
 
         return eventRepository.findAllByInitiatorId(initiatorId, pageable)
                 .stream()
@@ -114,7 +114,8 @@ public class UserEventServiceImpl implements UserEventService {
 
         checkActionState(eventDto.getStateAction(), event);
 
-        eventMapper.partialUpdate(eventDto, event);
+         eventMapper.partialUpdate(eventDto, event);
+
 
         return eventMapper.toDto(event);
 
@@ -122,7 +123,8 @@ public class UserEventServiceImpl implements UserEventService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ParticipantRequestDtoResponse> getEventsRequests(Long userId, Long eventId) {
+    public List<ParticipantRequestDtoResponse> getEventsRequests(Long
+                                                                         userId, Long eventId) {
         getEventIfExists(eventId);
 
         getUserIfExists(userId);
