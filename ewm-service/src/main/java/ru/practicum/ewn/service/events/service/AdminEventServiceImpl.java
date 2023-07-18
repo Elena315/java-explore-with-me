@@ -36,7 +36,7 @@ public class AdminEventServiceImpl implements AdminEventService {
     @Override
     public List<EventDto> adminGetEvents(AdminEventFilter filter, int from, int size) {
         log.info("getting all events by admin");
-        Pageable pageable = PageRequest.of(from/size, size);
+        Pageable pageable = PageRequest.of(from / size, size);
 
         Specification<Event> specification = getAdminsFilters(filter);
 

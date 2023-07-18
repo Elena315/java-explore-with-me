@@ -45,7 +45,7 @@ public class EventServiceImpl implements EventService {
 
         statisticService.sendStatistic(endpointHitDto);
 
-        Pageable pageable = PageRequest.of(from/size, size);
+        Pageable pageable = PageRequest.of(from / size, size);
 
         Specification<Event> specification = filtersFromUser(filter);
 

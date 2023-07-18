@@ -14,11 +14,9 @@ import ru.practicum.ewn.service.compilations.dto.CompilationUpdateDto;
 import ru.practicum.ewn.service.compilations.mapper.CompilationMapper;
 import ru.practicum.ewn.service.compilations.model.Compilation;
 import ru.practicum.ewn.service.events.dao.EventRepository;
-import ru.practicum.ewn.service.events.dto.EventShortDto;
 import ru.practicum.ewn.service.events.model.Event;
 import ru.practicum.ewn.service.handlers.NotFoundException;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -78,7 +76,7 @@ public class CompilationServiceImpl implements CompilationService {
     @Override
     @Transactional(readOnly = true)
     public List<CompilationDto> findAllCompilations(Boolean pinned, int from, int size) {
-        Pageable pageable = PageRequest.of(from/size, size);
+        Pageable pageable = PageRequest.of(from / size, size);
 
         return compilationRepository.findCompilationByPinned(pinned, pageable).stream()
                 .map(compilationMapper::toDto)
