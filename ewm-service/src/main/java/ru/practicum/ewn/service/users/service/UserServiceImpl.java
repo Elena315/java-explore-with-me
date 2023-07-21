@@ -114,7 +114,7 @@ public class UserServiceImpl implements UserService {
             if (event.getParticipantLimit() != 0) {
                 throw new DataValidationException("Participant limit for event exceeded");
             } else {
-              System.out.println("For the requested operation the conditions are not met.");
+                System.out.println("For the requested operation the conditions are not met.");
             }
         }
         if (!event.getEventState().equals(EventState.PUBLISHED))
@@ -126,14 +126,15 @@ public class UserServiceImpl implements UserService {
 
         request.setRequester(user)
                 .setEvent(event)
-                .setCreated(LocalDateTime.now());
+                .setCreated(LocalDateTime.now())
+                .setStatus(RequestStatus.PENDING);
 
-        if (Boolean.TRUE.equals(event.getRequestModeration())) {
-            request.setStatus(RequestStatus.PENDING);
-        } else {
+
+        if (event.getParticipantLimit() == 0 || Boolean.TRUE.equals(!event.getRequestModeration())) {
             request.setStatus(RequestStatus.CONFIRMED);
             event.setConfirmedRequests(event.getConfirmedRequests() + 1);
         }
+
 
         return requestRepository.save(request);
     }

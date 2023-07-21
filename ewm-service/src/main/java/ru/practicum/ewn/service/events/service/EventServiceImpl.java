@@ -67,9 +67,11 @@ public class EventServiceImpl implements EventService {
                 .orElseThrow(() -> new NotFoundException(String.format("event with id %d not found", id)));
 
         statisticService.sendStatistic(endpointHitDto);
-
+        // setViewsOfEvents(List.of(event));
+        // event.setViews(event.getViews() + 1);
         return buildEventResponse(event);
     }
+
 
     private List<EventDto> buildEventResponse(List<Event> events) {
         if (!events.isEmpty()) {

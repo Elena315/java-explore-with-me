@@ -39,10 +39,11 @@ public class NewEventDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @Future
     LocalDateTime eventDate;
-
+    @Builder.Default
     Boolean paid = false;
+    @Builder.Default
     Integer participantLimit = 0;
-
+    @Builder.Default
     Boolean requestModeration = true;
 
     @NotBlank

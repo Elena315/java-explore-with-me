@@ -17,6 +17,8 @@ import ru.practicum.ewn.service.events.dao.EventRepository;
 import ru.practicum.ewn.service.events.model.Event;
 import ru.practicum.ewn.service.handlers.NotFoundException;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,10 +34,24 @@ public class CompilationServiceImpl implements CompilationService {
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public CompilationDto createCompilation(CompilationDtoCreate compilationDto) {
         log.info("creating new compilation {}", compilationDto);
+
         compilationDto.setPinned(compilationDto.getPinned() != null ? compilationDto.getPinned() : false);
+
+        if (compilationDto.getEvents() == null) {
+            compilationDto.setEvents(new ArrayList<>());
+        }
+
         List<Event> events = eventRepository.findEventsByIdIn(compilationDto.getEvents());
 
         Compilation compilation = compilationMapper.toEntity(compilationDto, events);
+
+        if (compilationDto.getEvents() != null) {
+            compilation.setEvents(compilationDto.getEvents().stream()
+                    .flatMap(ids -> eventRepository.findAllById(Collections.singleton(ids)).stream())
+                    .collect(Collectors.toList()));
+        } else {
+            compilation.setEvents(new ArrayList<>());
+        }
 
         compilationRepository.save(compilation);
 
@@ -46,12 +62,16 @@ public class CompilationServiceImpl implements CompilationService {
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public CompilationDto updateCompilation(Long compilationId, CompilationUpdateDto compilationDto) {
         log.info("updating compilation with id {}", compilationId);
-
         Compilation compilation = getCompilationIfExists(compilationId);
 
-        List<Event> events = eventRepository.findEventsByIdIn(compilationDto.getEvents());
+        if (compilationDto.getEvents() != null) {
+            compilation.setEvents(compilationDto.getEvents().stream()
+                    .flatMap(ids -> eventRepository.findAllById(Collections.singleton(ids)).stream())
+                    .collect(Collectors.toList()));
+        }
 
-        compilationMapper.partialUpdate(compilationDto, compilation, events);
+        compilation.setPinned(compilationDto.getPinned() != null ? compilationDto.getPinned() : compilation.getPinned());
+        compilation.setTitle(compilationDto.getTitle() != null ? compilationDto.getTitle() : compilation.getTitle());
 
         return compilationMapper.toDto(compilation);
     }
@@ -78,9 +98,12 @@ public class CompilationServiceImpl implements CompilationService {
     public List<CompilationDto> findAllCompilations(Boolean pinned, int from, int size) {
         Pageable pageable = PageRequest.of(from / size, size);
 
-        return compilationRepository.findCompilationByPinned(pinned, pageable).stream()
-                .map(compilationMapper::toDto)
-                .collect(Collectors.toList());
+        if (pinned != null) {
+            return compilationRepository.findCompilationByPinned(pinned, pageable).stream()
+                    .map(compilationMapper::toDto)
+                    .collect(Collectors.toList());
+        }
+        return compilationRepository.findAll(pageable).map(compilationMapper::toDto).toList();
     }
 
     private Compilation getCompilationIfExists(Long compilationId) {

@@ -48,6 +48,7 @@ public class AdminEventServiceImpl implements AdminEventService {
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public EventDto updateEventByAdmin(Long eventId, UpdateEventAdminRequest updateRequest) {
+
         dateTimeChecker(updateRequest.getEventDate());
 
         Event event = findEventById(eventId);
@@ -62,7 +63,20 @@ public class AdminEventServiceImpl implements AdminEventService {
             throw new DataValidationException("Published event can not be rejected");
         }
 
-        checkActionState(updateRequest.getStateAction(), event);
+        if (updateRequest.getAnnotation() != null) {
+            event.setAnnotation(updateRequest.getAnnotation());
+        }
+        if (updateRequest.getDescription() != null) {
+            event.setDescription(updateRequest.getDescription());
+        }
+
+        if (updateRequest.getTitle() != null) {
+            event.setTitle(updateRequest.getTitle());
+        }
+
+        if (updateRequest.getStateAction() != null) {
+            checkActionState(updateRequest.getStateAction(), event);
+        }
 
         eventMapper.partialUpdate(updateRequest, event);
 

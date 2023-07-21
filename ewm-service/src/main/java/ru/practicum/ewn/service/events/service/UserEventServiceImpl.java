@@ -59,9 +59,8 @@ public class UserEventServiceImpl implements UserEventService {
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public EventDto createEventByUser(Long initiatorId, NewEventDto eventDto) {
 
-        dateTimeChecker(eventDto.getEventDate());
-
         log.info("creating new event");
+
         User user = userRepository.findById(initiatorId)
                 .orElseThrow(() -> new NotFoundException(String.format("user with id %d not found", initiatorId)));
 
@@ -69,6 +68,7 @@ public class UserEventServiceImpl implements UserEventService {
                 new NotFoundException("category not found"));
 
         Event event = eventMapper.toEntity(eventDto);
+        dateTimeChecker(eventDto.getEventDate());
 
         event.setInitiator(user)
                 .setCreatedOn(LocalDateTime.now())
@@ -111,11 +111,20 @@ public class UserEventServiceImpl implements UserEventService {
         if (event.getEventState() == EventState.PUBLISHED) {
             throw new DataValidationException("Only pending or canceled event can be edited");
         }
-
-        checkActionState(eventDto.getStateAction(), event);
+        if (eventDto.getAnnotation() != null) {
+            event.setAnnotation(eventDto.getAnnotation());
+        }
+        if (eventDto.getDescription() != null) {
+            event.setDescription(eventDto.getDescription());
+        }
+        if (eventDto.getTitle() != null) {
+            event.setTitle(eventDto.getTitle());
+        }
+        if (eventDto.getStateAction() != null) {
+            checkActionState(eventDto.getStateAction(), event);
+        }
 
         eventMapper.partialUpdate(eventDto, event);
-
 
         return eventMapper.toDto(event);
 
