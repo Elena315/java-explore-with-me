@@ -22,6 +22,7 @@ public class StatsClient {
     }
 
     public EndpointHitResponseDto post(EndpointHitDto endpointHitDto) {
+
         return client.post()
                 .uri("/hit")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)

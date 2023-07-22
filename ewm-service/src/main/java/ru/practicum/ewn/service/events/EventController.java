@@ -20,7 +20,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class EventController {
+
     private final EventService eventService;
+
 
     @GetMapping("{id}")
     public EventDto getEventById(@PathVariable Long id, HttpServletRequest servletRequest,

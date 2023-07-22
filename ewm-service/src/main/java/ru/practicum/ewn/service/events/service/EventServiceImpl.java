@@ -41,14 +41,9 @@ public class EventServiceImpl implements EventService {
                                                int size,
                                                EndpointHitDto endpointHitDto) {
         log.info("getting all events by users");
-
-
         statisticService.sendStatistic(endpointHitDto);
-
         Pageable pageable = PageRequest.of(from / size, size);
-
         Specification<Event> specification = filtersFromUser(filter);
-
         List<Event> events = eventRepository.findAll(specification, pageable);
         if (events == null || events.isEmpty()) {
             throw new DataException("Incorrectly made request.");
@@ -62,13 +57,9 @@ public class EventServiceImpl implements EventService {
     @Transactional(readOnly = true)
     public EventDto getEventById(Long id, EndpointHitDto endpointHitDto) {
         log.info("getting event with id {}", id);
-
         Event event = eventRepository.findByIdAndPublishedOnIsNotNull(id)
                 .orElseThrow(() -> new NotFoundException(String.format("event with id %d not found", id)));
-
         statisticService.sendStatistic(endpointHitDto);
-        // setViewsOfEvents(List.of(event));
-        // event.setViews(event.getViews() + 1);
         return buildEventResponse(event);
     }
 

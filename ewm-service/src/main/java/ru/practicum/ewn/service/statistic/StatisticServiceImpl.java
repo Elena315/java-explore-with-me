@@ -7,6 +7,7 @@ import ru.practicum.ewm.client.StatsClient;
 import ru.practicum.ewm.dto.EndpointHitDto;
 import ru.practicum.ewm.dto.HitCriteria;
 import ru.practicum.ewm.dto.ViewStatisticsDto;
+import ru.practicum.ewn.service.events.model.Event;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,7 +17,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class StatisticServiceImpl implements StatisticService {
+
     private final StatsClient statsClient;
+
+    @Override
+    public void sendStatistic(EndpointHitDto endpointHitDto) {
+        log.info("sending new statistic info {}", endpointHitDto);
+        statsClient.post(endpointHitDto);
+    }
+
 
     @Override
     public List<ViewStatisticsDto> getStatistics(LocalDateTime startDate, List<Long> eventIds) {
@@ -30,15 +39,11 @@ public class StatisticServiceImpl implements StatisticService {
         criteria.setUris(uris)
                 .setStart(startDate)
                 .setEnd(endDate)
-                .setUnique(false);
+                .setUnique(true);
         log.info("getting hit statistic with params: {}", criteria);
 
         return statsClient.get(criteria);
     }
 
-    @Override
-    public void sendStatistic(EndpointHitDto endpointHitDto) {
-        log.info("sending new statistic info {}", endpointHitDto);
-        statsClient.post(endpointHitDto);
-    }
+
 }
