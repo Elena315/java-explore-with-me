@@ -7,7 +7,6 @@ import ru.practicum.ewm.client.StatsClient;
 import ru.practicum.ewm.dto.EndpointHitDto;
 import ru.practicum.ewm.dto.HitCriteria;
 import ru.practicum.ewm.dto.ViewStatisticsDto;
-import ru.practicum.ewn.service.events.model.Event;
 
 import java.time.LocalDateTime;
 import java.util.List;
