@@ -27,7 +27,8 @@ public class ExceptionsHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({MissingRequestHeaderException.class,
-            MissingServletRequestParameterException.class})
+            MissingServletRequestParameterException.class,
+            NotFoundException.class})
     public ErrorMessage handleException(Exception ex) {
         String error = ex.getMessage();
         log.error("{} \n{}", error, String.valueOf(ex));
