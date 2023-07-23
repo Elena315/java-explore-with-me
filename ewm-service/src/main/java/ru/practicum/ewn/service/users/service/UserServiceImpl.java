@@ -38,8 +38,6 @@ public class UserServiceImpl implements UserService {
     private final RequestRepository requestRepository;
     private final EventRepository eventRepository;
 
-    @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
     public UserDtoResponse createUser(UserDtoCreate userDto) {
         log.info("creating new user {}", userDto);
 
@@ -50,17 +48,12 @@ public class UserServiceImpl implements UserService {
         return userMapper.toDto(user);
     }
 
-    @Override
     public void deleteUser(Long id) {
-        log.info("deleting user with id {}", id);
+        checkUserExists(id);
         userRepository.deleteById(id);
     }
 
-    @Override
-    @Transactional(readOnly = true)
     public List<UserDtoResponse> findUsers(List<Long> ids, Integer from, Integer size) {
-        log.info("getting users with id {}", ids);
-
         Pageable pg = PageRequest.of(from, size);
 
         return ids != null ? userRepository.findByParams(ids, pg).stream()
@@ -72,22 +65,17 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    @Transactional(readOnly = true)
     public List<ParticipantRequestDtoResponse> getUsersRequests(Long userId) {
-        log.info("getting participants requests by requester id {}", userId);
-        getUserIfExists(userId);
+        checkUserExists(userId);
 
         return requestRepository.findRequestByRequesterId(userId).stream()
                 .map(requestMapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public ParticipantRequestDtoResponse cancelSelfRequest(Long userId, Long requestId) {
-        log.info("canceling request with id {} from user with id {}", requestId, userId);
-        getUserIfExists(userId);
+        checkUserExists(userId);
 
         Request request = requestRepository.findRequestByIdAndRequesterId(requestId, userId).orElseThrow(() ->
                 new NotFoundException(String.format("request with id=%d not found", requestId)));
@@ -102,8 +90,6 @@ public class UserServiceImpl implements UserService {
         return requestMapper.toDto(request);
     }
 
-    @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
     public ParticipantRequestDtoResponse sendParticipantRequest(Long userId, Long eventId) {
         log.info("creating new request");
 
@@ -116,32 +102,29 @@ public class UserServiceImpl implements UserService {
 
     private Request createRequest(Long userId, Long eventId) {
         Event event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("event not found"));
-
-        User user = this.getUserIfExists(userId);
-
+        User user = this.checkUserExists(userId);
         Request request = new Request();
-
-
         if (event.getInitiator().equals(user))
             throw new DataValidationException("You can not send request for own event");
 
-        if (Objects.equals(event.getConfirmedRequests(), event.getParticipantLimit()))
-            throw new DataValidationException("Participant limit for event exceeded");
-
+        if (Objects.equals(event.getConfirmedRequests(), event.getParticipantLimit())) {
+            if (event.getParticipantLimit() != 0) {
+                throw new DataValidationException("Participant limit for event exceeded");
+            } else {
+                System.out.println("For the requested operation the conditions are not met.");
+            }
+        }
         if (!event.getEventState().equals(EventState.PUBLISHED))
             throw new DataValidationException("Can not send request for not published event");
-
         if (requestRepository.findRequestByRequesterIdAndEventId(userId, eventId) != null) {
             throw new DataValidationException("You already sent participation request for this event");
         }
-
         request.setRequester(user)
                 .setEvent(event)
-                .setCreated(LocalDateTime.now());
+                .setCreated(LocalDateTime.now())
+                .setStatus(RequestStatus.PENDING);
 
-        if (Boolean.TRUE.equals(event.getRequestModeration())) {
-            request.setStatus(RequestStatus.PENDING);
-        } else {
+        if (event.getParticipantLimit() == 0 || Boolean.TRUE.equals(!event.getRequestModeration())) {
             request.setStatus(RequestStatus.CONFIRMED);
             event.setConfirmedRequests(event.getConfirmedRequests() + 1);
         }
@@ -149,7 +132,7 @@ public class UserServiceImpl implements UserService {
         return requestRepository.save(request);
     }
 
-    private User getUserIfExists(Long userId) {
+    private User checkUserExists(Long userId) {
         return userRepository.findById(userId).orElseThrow(() ->
                 new NotFoundException(String.format("User with id=%d not found", userId)));
     }

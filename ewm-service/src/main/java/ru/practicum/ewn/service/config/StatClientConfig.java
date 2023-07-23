@@ -8,7 +8,7 @@ import ru.practicum.ewm.client.StatsClient;
 
 @Configuration
 public class StatClientConfig {
-    @Value("${stats.client.url}")
+    @Value("${stats.client.url:http://localhost:9090/}")
     private String url;
 
     @Bean

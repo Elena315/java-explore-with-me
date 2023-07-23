@@ -60,20 +60,6 @@ public class ApiErrorHandler {
         return ResponseEntity.status(status).body(apiError);
     }
 
-    @ResponseStatus(HttpStatus.CONFLICT)
-    @ExceptionHandler(EmptyResultDataAccessException.class)
-    public ResponseEntity<ApiError> handleConflictException(EmptyResultDataAccessException e) {
-        log.warn(e.getMessage());
-
-        final HttpStatus status = HttpStatus.CONFLICT;
-        final ApiError apiError = ApiError.builder()
-                .status(status)
-                .message(e.getMessage())
-                .reason("For the requested operation the conditions are not met.")
-                .build();
-        return ResponseEntity.status(status).body(apiError);
-    }
-
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleThrowable(final Throwable e) {

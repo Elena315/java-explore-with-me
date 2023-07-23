@@ -75,7 +75,6 @@ public class UserEventServiceImpl implements UserEventService {
 
         Event event = eventMapper.toEntity(eventDto);
 
-
         event.setInitiator(user)
                 .setCreatedOn(LocalDateTime.now())
                 .setEventDate(eventDto.getEventDate())
@@ -107,13 +106,10 @@ public class UserEventServiceImpl implements UserEventService {
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public EventDto updateUsersEventById(Long userId, Long eventId, UserEventUpdateDto eventDto) {
         log.info("updating event with id {}", eventId);
-
         dateTimeChecker(eventDto.getEventDate());
-
         Event event = Optional.of(eventRepository.findEventByIdAndInitiator(eventId, getUserIfExists(userId)))
                 .orElseThrow(() -> new NotFoundException(String.format("event with id %d for user with id %d not found",
                         eventId, userId)));
-
         if (event.getEventState() == EventState.PUBLISHED) {
             throw new DataValidationException("Only pending or canceled event can be edited");
         }
@@ -131,7 +127,6 @@ public class UserEventServiceImpl implements UserEventService {
         }
 
         eventMapper.partialUpdate(eventDto, event);
-
         return eventMapper.toDto(event);
 
     }
