@@ -102,11 +102,8 @@ public class UserServiceImpl implements UserService {
 
     private Request createRequest(Long userId, Long eventId) {
         Event event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("event not found"));
-
         User user = this.checkUserExists(userId);
-
         Request request = new Request();
-
         if (event.getInitiator().equals(user))
             throw new DataValidationException("You can not send request for own event");
 
@@ -119,22 +116,18 @@ public class UserServiceImpl implements UserService {
         }
         if (!event.getEventState().equals(EventState.PUBLISHED))
             throw new DataValidationException("Can not send request for not published event");
-
-        if (!requestRepository.findRequestByRequesterIdAndEventId(userId, eventId).isEmpty()) {
+        if (requestRepository.findRequestByRequesterIdAndEventId(userId, eventId) != null) {
             throw new DataValidationException("You already sent participation request for this event");
         }
-
         request.setRequester(user)
                 .setEvent(event)
                 .setCreated(LocalDateTime.now())
                 .setStatus(RequestStatus.PENDING);
 
-
         if (event.getParticipantLimit() == 0 || Boolean.TRUE.equals(!event.getRequestModeration())) {
             request.setStatus(RequestStatus.CONFIRMED);
             event.setConfirmedRequests(event.getConfirmedRequests() + 1);
         }
-
 
         return requestRepository.save(request);
     }
